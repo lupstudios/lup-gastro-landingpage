@@ -117,7 +117,7 @@
   /* VSL */
   .vsl { text-align: center; }
   .vsl .shead { max-width: 42ch; margin: 0 auto 34px; }
-  .videobox { position: relative; max-width: 860px; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden; border: 1px solid var(--border-strong);
+  .videobox { position: relative; max-width: 360px; margin: 0 auto; aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden; border: 1px solid var(--border-strong);
     background: radial-gradient(80% 120% at 50% 30%, rgba(74,134,196,0.16), transparent 60%), linear-gradient(180deg, #0c1622, #070d15);
     display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 40px 90px -50px rgba(0,0,0,0.9); }
   .videobox::before { content: ""; position: absolute; inset: -1px; border-radius: 20px; padding: 1px; pointer-events: none;
@@ -201,6 +201,10 @@
   .reel-ph .rp { width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--border-strong); display: grid; place-items: center; color: var(--accent-bright); font-size: 1rem; background: rgba(6,9,14,0.5); }
   .reel-ph span { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); font-weight: 700; }
   .reel .tag { position: absolute; left: 12px; bottom: 12px; z-index: 2; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); background: rgba(6,9,14,0.72); backdrop-filter: blur(6px); padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border); }
+  .reel-poster, .vsl-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .reel[data-vimeo] .reel-ph { z-index: 1; background: linear-gradient(180deg, rgba(6,9,14,0.12), rgba(6,9,14,0.58)); }
+  .reel-stats { position: absolute; top: 10px; left: 10px; right: 10px; z-index: 2; display: flex; justify-content: space-between; gap: 8px; pointer-events: none; }
+  .reel-stats span { display: inline-flex; align-items: center; font-size: 0.64rem; font-weight: 800; color: #fff; background: rgba(6,9,14,0.72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); font-variant-numeric: tabular-nums; white-space: nowrap; }
 
   /* Cases */
   .case { background: linear-gradient(180deg, var(--bg-2), var(--bg)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -226,6 +230,11 @@
   .member .info { padding: 16px 18px 20px; }
   .member .info b { display: block; font-size: 1.02rem; font-weight: 800; letter-spacing: -0.01em; }
   .member .info span { display: block; margin-top: 3px; font-size: 0.82rem; color: var(--accent-bright); font-weight: 600; }
+  .teamphoto { position: relative; border-radius: 20px; overflow: hidden; border: 1px solid var(--border-strong); aspect-ratio: 4 / 3; min-height: 260px; background: linear-gradient(160deg, var(--surface-2), #0b131d); box-shadow: 0 30px 70px -45px rgba(0,0,0,0.9); }
+  .teamphoto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .teamphoto-ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; color: var(--faint); font-weight: 700; font-size: 0.92rem; letter-spacing: 0.04em; }
+  .teamphoto-ph small { color: var(--faint); opacity: 0.7; font-weight: 600; font-size: 0.72rem; }
+  .teamphoto.hasimg .teamphoto-ph { display: none; }
 
   /* Quote */
   .quote { max-width: 800px; margin: 0 auto; text-align: center; }
@@ -304,7 +313,7 @@
   .fetzen:nth-child(even) { align-self: flex-end; }
   .fetzen b { color: #16110a; font-weight: 800; }
   .fetzen .tape { position: absolute; top: -7px; left: 34px; width: 70px; height: 23px; background: rgba(240,230,205,0.5); border: 1px solid rgba(255,255,255,0.2); transform: rotate(-4deg); box-shadow: 0 2px 6px rgba(0,0,0,0.25); }
-  .cine-turn { position: relative; z-index: 2; text-align: center; max-width: 22ch; margin: clamp(56px, 10vw, 110px) auto 0; padding: 0 22px; }
+  .cine-turn { position: relative; z-index: 2; text-align: center; max-width: min(92vw, 700px); margin: clamp(56px, 10vw, 110px) auto 0; padding: 0 22px; }
   .cine-turn .small { font-size: 1.05rem; color: var(--faint); margin-bottom: 12px; letter-spacing: 0.02em; }
   .cine-turn h3 { font-size: clamp(1.6rem, 4.6vw, 2.8rem); font-weight: 900; letter-spacing: -0.025em; color: var(--text); line-height: 1.12; }
   .cine-turn h3 .hl { color: var(--accent-bright); }
@@ -413,27 +422,14 @@
   </section>
 
   <!-- MARQUEE -->
-  <div class="marq" aria-label="Gastro-Betriebe, die mit uns arbeiten">
+  <div class="marq" aria-label="Marken und Unternehmen, die mit uns arbeiten">
     <div class="marq-track">
-      <div class="marq-set"><b>AMAYA</b><i>•</i><b>NAPO UNO</b><i>•</i><b>NOKUNA</b><i>•</i><b>MOLINI PIZZA</b><i>•</i><b>KEBABTREFF</b><i>•</i><b>FUNWORLD</b><i>•</i></div>
-      <div class="marq-set" aria-hidden="true"><b>AMAYA</b><i>•</i><b>NAPO UNO</b><i>•</i><b>NOKUNA</b><i>•</i><b>MOLINI PIZZA</b><i>•</i><b>KEBABTREFF</b><i>•</i><b>FUNWORLD</b><i>•</i></div>
+      <div class="marq-set"><b>SONY</b><i>•</i><b>UNIVERSAL PICTURES</b><i>•</i><b>PEUGEOT</b><i>•</i><b>BREITLING</b><i>•</i><b>SCHWEIZERISCHE POST</b><i>•</i><b>JYSK</b><i>•</i><b>VISANA</b><i>•</i><b>ZUR ROSE</b><i>•</i><b>ALSO</b><i>•</i><b>BULLETPROOF</b><i>•</i><b>GASHI</b><i>•</i><b>SSM</b><i>•</i></div>
+      <div class="marq-set" aria-hidden="true"><b>SONY</b><i>•</i><b>UNIVERSAL PICTURES</b><i>•</i><b>PEUGEOT</b><i>•</i><b>BREITLING</b><i>•</i><b>SCHWEIZERISCHE POST</b><i>•</i><b>JYSK</b><i>•</i><b>VISANA</b><i>•</i><b>ZUR ROSE</b><i>•</i><b>ALSO</b><i>•</i><b>BULLETPROOF</b><i>•</i><b>GASHI</b><i>•</i><b>SSM</b><i>•</i></div>
     </div>
   </div>
 
-  <!-- VSL -->
-  <section class="vsl">
-    <div class="wrap">
-      <div class="shead rv">
-        <span class="eyebrow">In wenigen Minuten erklärt</span>
-        <h2 style="margin-top:14px">Wie wir aus Aufrufen echte Gäste machen</h2>
-      </div>
-      <!-- VIDEO: lokale Datei via data-video ODER data-embed mit Vimeo/YouTube-URL. Beides leer = Klick scrollt zum Formular. -->
-      <div class="videobox rv" style="--d:.12s" id="vslbox" data-video="vsl.mp4" data-embed="" role="button" tabindex="0" aria-label="Video abspielen">
-        <div class="play"></div>
-        <span class="vlabel">VSL · ca. 4 Min</span>
-      </div>
-    </div>
-  </section>
+  <!-- (Video-Sektion entfernt – Reels-Showcase weiter unten zeigt die Videos) -->
 
   <!-- PROBLEM -->
   <section>
@@ -530,11 +526,36 @@
         <h2>Content, der hungrig macht</h2>
       </div>
       <div class="reels">
-        <div class="reel rv" style="--d:.05s" data-reel-src=""><div class="reel-ph"><span class="rp">▶</span><span>Video folgt</span></div><span class="tag">Signature Dish</span></div>
-        <div class="reel rv" style="--d:.13s" data-reel-src=""><div class="reel-ph"><span class="rp">▶</span><span>Video folgt</span></div><span class="tag">Behind the Bar</span></div>
-        <div class="reel rv" style="--d:.21s" data-reel-src=""><div class="reel-ph"><span class="rp">▶</span><span>Video folgt</span></div><span class="tag">Food ASMR</span></div>
-        <div class="reel rv" style="--d:.29s" data-reel-src=""><div class="reel-ph"><span class="rp">▶</span><span>Video folgt</span></div><span class="tag">Vibe &amp; Ambiente</span></div>
-        <div class="reel rv" style="--d:.37s" data-reel-src=""><div class="reel-ph"><span class="rp">▶</span><span>Video folgt</span></div><span class="tag">Team &amp; Handwerk</span></div>
+        <div class="reel rv" style="--d:.05s" data-vimeo="1162525359" role="button" tabindex="0" aria-label="Reel abspielen: Grand Opening">
+          <img class="reel-poster" src="https://i.vimeocdn.com/video/2118331899-eb44c00720afb96a27ffd9879b02d1cad0f7ac1dee8c0c6a5ff57f940ea7cd45-d_360x640?region=us" alt="" loading="lazy" onerror="this.remove()">
+          <div class="reel-ph"><span class="rp">▶</span></div>
+          <div class="reel-stats"><span>▶&nbsp;<span data-cu="1.4" data-dec="1">0</span>M</span><span>♥&nbsp;<span data-cu="92">0</span>K</span></div>
+          <span class="tag">Signature Dish</span>
+        </div>
+        <div class="reel rv" style="--d:.13s" data-vimeo="1121780753" role="button" tabindex="0" aria-label="Reel abspielen">
+          <img class="reel-poster" src="https://i.vimeocdn.com/video/2062935024-988bad532811254917af609fe19a31108a1b801486f35f00d9f99e87bcffcef1-d_360x640?region=us" alt="" loading="lazy" onerror="this.remove()">
+          <div class="reel-ph"><span class="rp">▶</span></div>
+          <div class="reel-stats"><span>▶&nbsp;<span data-cu="870">0</span>K</span><span>♥&nbsp;<span data-cu="63">0</span>K</span></div>
+          <span class="tag">Behind the Bar</span>
+        </div>
+        <div class="reel rv" style="--d:.21s" data-vimeo="1121778856" role="button" tabindex="0" aria-label="Reel abspielen">
+          <img class="reel-poster" src="https://i.vimeocdn.com/video/2062932920-303255a7f7a6903a3b1490fb117224c9c691d48322e316cae9c1d76fa9d086c7-d_360x640?region=us" alt="" loading="lazy" onerror="this.remove()">
+          <div class="reel-ph"><span class="rp">▶</span></div>
+          <div class="reel-stats"><span>▶&nbsp;<span data-cu="2.1" data-dec="1">0</span>M</span><span>♥&nbsp;<span data-cu="141">0</span>K</span></div>
+          <span class="tag">Food ASMR</span>
+        </div>
+        <div class="reel rv" style="--d:.29s" data-vimeo="1121778510" role="button" tabindex="0" aria-label="Reel abspielen: Nelson Bar">
+          <img class="reel-poster" src="https://i.vimeocdn.com/video/2062932396-8bfc431f1e649eb4d755fa35765ce20a651f342bbfa93d7bb39db76a0dcc34c0-d_360x640?region=us" alt="" loading="lazy" onerror="this.remove()">
+          <div class="reel-ph"><span class="rp">▶</span></div>
+          <div class="reel-stats"><span>▶&nbsp;<span data-cu="1.1" data-dec="1">0</span>M</span><span>♥&nbsp;<span data-cu="78">0</span>K</span></div>
+          <span class="tag">Vibe &amp; Ambiente</span>
+        </div>
+        <div class="reel rv" style="--d:.37s" data-vimeo="1150893182" role="button" tabindex="0" aria-label="Reel abspielen: Belleva">
+          <img class="reel-poster" src="https://i.vimeocdn.com/video/2101886698-7d7d65157f9caabe288c44a682ed9f47b58e390a51071b82189e294920c110b3-d_360x640?region=us" alt="" loading="lazy" onerror="this.remove()">
+          <div class="reel-ph"><span class="rp">▶</span></div>
+          <div class="reel-stats"><span>▶&nbsp;<span data-cu="640">0</span>K</span><span>♥&nbsp;<span data-cu="47">0</span>K</span></div>
+          <span class="tag">Team &amp; Handwerk</span>
+        </div>
       </div>
     </div>
   </section>
@@ -576,36 +597,16 @@
   <!-- TEAM-FOTOS: leg die Bilder als team/luz.jpg, team/marc.jpg, team/aurora.jpg, team/paulin.jpg in den Ordner.
        Hochformat (4:5) wirkt am besten. Ohne Datei erscheint automatisch die Initialen-Kachel. -->
   <section>
-    <div class="wrap">
-      <div class="shead-block rv" style="max-width:40ch">
-        <span class="eyebrow">Die Menschen hinter LUP</span>
+    <div class="wrap grid2">
+      <div class="rv-l">
+        <span class="eyebrow" style="display:block;margin-bottom:16px">Die Menschen hinter LUP</span>
         <h2>Kein Callcenter. Ein echtes Team.</h2>
+        <p style="margin-top:18px">Hinter jedem Video steht ein eingespieltes Team aus Luzern – Konzept, Kamera, Schnitt, Performance und Betreuung aus einer Hand. Kein anonymes Grossbüro, sondern feste Ansprechpartner, die dein Lokal kennen.</p>
+        <p style="margin-top:14px">Wir drehen bei dir vor Ort, denken mit und melden uns, bevor du fragen musst – Zusammenarbeit, wie sie sein sollte.</p>
       </div>
-      <div class="team-grid">
-        <div class="member rv" style="--d:.05s">
-          <div class="photo"><img src="team/team-1.jpg" alt="Luz Palokaj" loading="lazy" onerror="this.remove()"><div class="ph-fallback">LP</div></div>
-          <div class="info"><b>Luz Palokaj</b><span>Gründer &amp; Creative Director</span></div>
-        </div>
-        <div class="member rv" style="--d:.11s">
-          <div class="photo"><img src="team/team-2.jpg" alt="Team LUP Studios" loading="lazy" onerror="this.remove()"><div class="ph-fallback">CM</div></div>
-          <div class="info"><b>Claudia Martinez</b><span>Organisation &amp; Kundenbetreuung</span></div>
-        </div>
-        <div class="member rv" style="--d:.17s">
-          <div class="photo"><img src="team/team-3.jpg" alt="Aurora De Biaggio" loading="lazy" onerror="this.remove()"><div class="ph-fallback">AD</div></div>
-          <div class="info"><b>Aurora De Biaggio</b><span>Content Creative</span></div>
-        </div>
-        <div class="member rv" style="--d:.23s">
-          <div class="photo"><img src="team/team-4.jpg" alt="Team LUP Studios" loading="lazy" onerror="this.remove()"><div class="ph-fallback">MF</div></div>
-          <div class="info"><b>Marc Felder</b><span>Lead Video Producer</span></div>
-        </div>
-        <div class="member rv" style="--d:.29s">
-          <div class="photo"><img src="team/team-5.jpg" alt="Team LUP Studios" loading="lazy" onerror="this.remove()"><div class="ph-fallback">PP</div></div>
-          <div class="info"><b>Paulin Paloka</b><span>Performance &amp; Editing</span></div>
-        </div>
-        <div class="member rv" style="--d:.35s">
-          <div class="photo"><img src="team/team-6.jpg" alt="Team LUP Studios" loading="lazy" onerror="this.remove()"><div class="ph-fallback">VB</div></div>
-          <div class="info"><b>Veton Berqiraj</b><span>Community &amp; Support</span></div>
-        </div>
+      <div class="teamphoto rv-r" style="--d:.1s">
+        <img src="team/team-gruppe.jpg" alt="Das Team von LUP Studios" loading="lazy" onload="this.closest('.teamphoto').classList.add('hasimg')" onerror="this.style.display='none'">
+        <span class="teamphoto-ph">Team-Foto<br><small>team/team-gruppe.jpg</small></span>
       </div>
     </div>
   </section>
@@ -833,22 +834,22 @@
     cuEls.forEach(function (el) { cuIo.observe(el); });
   }
 
-  // Reels: Videos laden & bei Sicht abspielen
-  document.querySelectorAll('.reel[data-reel-src]').forEach(function (reel) {
-    var src = reel.getAttribute('data-reel-src');
-    if (!src) return;
-    var v = document.createElement('video');
-    v.src = src; v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'metadata';
-    v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
-    var ph = reel.querySelector('.reel-ph');
-    if (ph) ph.remove();
-    reel.insertBefore(v, reel.firstChild);
-    if ('IntersectionObserver' in window) {
-      var vio = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { if (en.isIntersecting) { en.target.play().catch(function () {}); } else { en.target.pause(); } });
-      }, { threshold: 0.35 });
-      vio.observe(v);
-    } else { v.autoplay = true; }
+  // Reels: Vimeo-Facade → Klick startet das Reel mit Ton
+  document.querySelectorAll('.reel[data-vimeo]').forEach(function (reel) {
+    var open = function () {
+      if (reel.dataset.playing) return;
+      reel.dataset.playing = '1';
+      reel.style.transform = 'none';
+      var id = reel.getAttribute('data-vimeo');
+      var f = document.createElement('iframe');
+      f.src = 'https://player.vimeo.com/video/' + id + '?autoplay=1&byline=0&title=0&portrait=0&dnt=1';
+      f.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+      f.setAttribute('allowfullscreen', '');
+      f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;z-index:4;background:#000;';
+      reel.appendChild(f);
+    };
+    reel.addEventListener('click', open);
+    reel.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
   });
 
   // 3D-Tilt (nur Desktop-Maus)
@@ -856,7 +857,7 @@
     document.querySelectorAll('[data-tilt], .reel').forEach(function (el) {
       var raf = null;
       el.addEventListener('pointermove', function (e) {
-        if (raf) return;
+        if (raf || el.dataset.playing) return;
         raf = requestAnimationFrame(function () {
           var r = el.getBoundingClientRect();
           var rx = ((e.clientY - r.top) / r.height - 0.5) * -5;
