@@ -752,6 +752,11 @@
   var LEAD_TOKEN = "HIER_TOKEN_EINTRAGEN";
   var QUELLE = "Landingpage Gastro";
 
+  // ==== E-MAIL-KOPIE jeder Anfrage an LUP (Sicherheitsnetz via FormSubmit, unabhängig vom Cockpit) ====
+  // Beim allerersten Absenden schickt FormSubmit eine Bestätigungsmail an diese Adresse ->
+  // den Link EINMAL klicken, danach laufen alle Anfragen automatisch als E-Mail ein.
+  var LEAD_EMAIL = "info@lupstudios.art";
+
   var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Wächter: rendert der Browser Animationen? Sonst alles sofort sichtbar.
@@ -915,18 +920,33 @@
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (form.hp && form.hp.value) { return; } // Honeypot: von Bots ausgefuellt -> still abbrechen
       if (!form.checkValidity()) { form.reportValidity(); return; }
-      var params = new URLSearchParams(new FormData(form));
-      params.append('quelle', QUELLE);
-      params.append('token', LEAD_TOKEN);
+      var thanked = false;
       var done = function () {
+        if (thanked) return; thanked = true;
         form.style.display = 'none';
         var t = document.getElementById('thanks');
         t.classList.add('show'); t.scrollIntoView({ behavior: 'smooth', block: 'center' });
         if (window.fbq) { fbq('track', 'Lead'); }
       };
+      // 1) lup-hub Cockpit (no-cors, fire-and-forget)
       if (LEAD_ENDPOINT) {
-        fetch(LEAD_ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }, body: params.toString() }).then(done).catch(done);
+        var params = new URLSearchParams(new FormData(form));
+        params.append('quelle', QUELLE);
+        params.append('token', LEAD_TOKEN);
+        fetch(LEAD_ENDPOINT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }, body: params.toString() }).catch(function () {});
+      }
+      // 2) E-Mail-Kopie an LEAD_EMAIL via FormSubmit (CORS/JSON, Sicherheitsnetz)
+      if (LEAD_EMAIL) {
+        var ef = new FormData(form);
+        ef.delete('hp');
+        ef.append('quelle', QUELLE);
+        ef.append('_subject', 'Neue Anfrage · Gastro-Landingpage');
+        ef.append('_template', 'table');
+        ef.append('_captcha', 'false');
+        fetch('https://formsubmit.co/ajax/' + encodeURIComponent(LEAD_EMAIL), { method: 'POST', headers: { 'Accept': 'application/json' }, body: ef }).then(done, done);
+        setTimeout(done, 4000);
       } else { done(); }
     });
   }
