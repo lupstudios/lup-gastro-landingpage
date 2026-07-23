@@ -235,6 +235,8 @@
   .teamphoto-ph { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; color: var(--faint); font-weight: 700; font-size: 0.92rem; letter-spacing: 0.04em; }
   .teamphoto-ph small { color: var(--faint); opacity: 0.7; font-weight: 600; font-size: 0.72rem; }
   .teamphoto.hasimg .teamphoto-ph { display: none; }
+  .teamgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .teamgrid img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center top; border-radius: 12px; background: #05070d; border: 1px solid var(--border); }
 
   /* Quote */
   .quote { max-width: 800px; margin: 0 auto; text-align: center; }
@@ -604,9 +606,13 @@
         <p style="margin-top:18px">Hinter jedem Video steht ein eingespieltes Team aus Luzern – Konzept, Kamera, Schnitt, Performance und Betreuung aus einer Hand. Kein anonymes Grossbüro, sondern feste Ansprechpartner, die dein Lokal kennen.</p>
         <p style="margin-top:14px">Wir drehen bei dir vor Ort, denken mit und melden uns, bevor du fragen musst – Zusammenarbeit, wie sie sein sollte.</p>
       </div>
-      <div class="teamphoto rv-r" style="--d:.1s">
-        <img src="team/Team_Gruppenfoto.png" alt="Das Team von LUP Studios" loading="lazy" onload="this.closest('.teamphoto').classList.add('hasimg')" onerror="this.style.display='none'">
-        <span class="teamphoto-ph">Team-Foto<br><small>team/Team_Gruppenfoto.png</small></span>
+      <div class="teamgrid rv-r" style="--d:.1s">
+        <img src="team/img/paulin.png" alt="" loading="lazy">
+        <img src="team/img/veton.png" alt="" loading="lazy">
+        <img src="team/img/marc.png" alt="" loading="lazy">
+        <img src="team/img/luz.png" alt="" loading="lazy">
+        <img src="team/img/claudia.png" alt="" loading="lazy">
+        <img src="team/img/aurora.png" alt="" loading="lazy">
       </div>
     </div>
   </section>
